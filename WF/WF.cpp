@@ -28,11 +28,12 @@
 //		printf("empty file!");
 //	}
 //}
-
+#define word_line 1000 
 
 int CountL[26];//存储字母出现的次数 
+char dif_word[word_line];//存储不重复的单词
  
-int CheckL(char c)
+int CheckL(char c)//判断字符是否为字母 
 {
     int index;
     char i, j;
@@ -60,10 +61,11 @@ int CheckL(char c)
 long LetterScan(char *filepath)
 {
     FILE *fp;
-    long AllCount = 0;
+    fp = fopen(filepath, "r");
+    long AllCount = 0;//存储字母个数 
     char c;
  
-    if((fp = fopen(filepath, "r")) == NULL)
+    if(fp == NULL)
     {
         perror("Can't open!");
         exit(1);
@@ -72,7 +74,7 @@ long LetterScan(char *filepath)
     while(!feof(fp))
     {
         c = fgetc(fp);
-        if(CheckL(c))
+        if(CheckL(c))//返回的flag值为1则计入AllCount 
         {
             AllCount++;
         }
@@ -113,7 +115,9 @@ char *SortL()
  
     return Letter;
 }
- 
+
+
+
 int main()
 {
     char *FilePath = "test.txt";
@@ -131,9 +135,12 @@ int main()
     printf("测试文本包含有效英文字母总数：%ld\n", count);
     for(i = 0; i < 26; i++)
     {
-        printf("%c共出现%d次，概率是%f\n", Letter[i], CountL[i], (float)CountL[i] / count);
+        printf("%c共出现%d次，概率是%.2f%%\n", Letter[i], CountL[i], (float)CountL[i] / count);
     }
     free(Letter);
+    
+    
+    
     return 0;
 }
 
